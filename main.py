@@ -8,6 +8,8 @@ icon = pygame.image.load('images\icon.png')
 pygame.display.set_icon(icon)
 
 background = pygame.image.load('images/background11.jpg')
+bd_width = background.get_width() # ширина фона
+
 player = pygame.image.load('images/player_right.png')
 player = pygame.transform.scale(player, (60, 60))
 player_left = pygame.transform.flip(player, True, False)
@@ -53,20 +55,21 @@ while running:
     
     b_x += move_b
 
-    if b_x <= -736:
-        b_x = 0
-    if b_x >= 736:
-        b_x = 0
+    if b_x <= -bd_width:
+        b_x += bd_width
+    if b_x >= bd_width:
+        b_x -= bd_width
 
     screen.blit(background,(b_x,0))
-    screen.blit(background,(b_x + 736,0))
+    screen.blit(background,(b_x + bd_width,0))
+    screen.blit(background,(b_x - bd_width,0))
     screen.blit(image, (player_x,player_y))
 
 
     pygame.display.update()
 pygame.quit()
 
-# нужно добавить фон слева, чтобы также была картинка. 
+# нужно добавить фон слева, чтобы также была картинка. ну и походу надо чтобы фон двигался
 
 
 
