@@ -21,6 +21,10 @@ walk_left = pygame.transform.scale(walk_left, (60, 60))
 player_x = 75
 player_y = 310
 speed = 1
+
+is_jump = False
+jump_count = 8
+
 image = player
 
 look_right = True
@@ -37,12 +41,12 @@ while running:
     
     move_b = 0
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_RIGHT] and player_x < 600:
+    if keys[pygame.K_d] and player_x < 600:
         player_x += speed
         image = walk_right
         move_b = -5
         look_right = True
-    elif keys[pygame.K_LEFT] and player_x > 75:
+    elif keys[pygame.K_a] and player_x > 75:
         player_x -= speed
         image = walk_left
         move_b = 5
@@ -53,6 +57,23 @@ while running:
         else:
             image = player_left
     
+    
+    if not is_jump:
+        if keys[pygame.K_SPACE]:
+            is_jump = True
+    else:
+        if jump_count >= -8:
+            if jump_count > 0:
+                player_y -= (jump_count ** 2) / 2
+            else:
+                player_y += (jump_count ** 2) / 2
+            jump_count -= 1
+        else:
+            is_jump = False
+            jump_count = 8
+
+
+
     b_x += move_b
 
     if b_x <= -bd_width:
@@ -69,7 +90,7 @@ while running:
     pygame.display.update()
 pygame.quit()
 
-# нужно добавить фон слева, чтобы также была картинка. ну и походу надо чтобы фон двигался
+# подумать, хорошая ли идея со самостоятельным движением, ну и сделать прыжок и врагов
 
 
 
