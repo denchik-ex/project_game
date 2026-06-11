@@ -4,7 +4,7 @@ pygame.init()
 screen = pygame.display.set_mode((736,414))
 pygame.display.set_caption("LOLgame 2026")
 clock = pygame.time.Clock()
-icon = pygame.image.load('images\icon.png')
+icon = pygame.image.load('images/icon.png')
 pygame.display.set_icon(icon)
 
 background = pygame.image.load('images/background11.jpg')
