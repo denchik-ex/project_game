@@ -13,8 +13,14 @@ bd_width = background.get_width() # ширина фона
 player = pygame.image.load('images/player_right.png')
 player = pygame.transform.scale(player, (60, 60))
 player_left = pygame.transform.flip(player, True, False)
+
+ghost = pygame.image.load('images/ghost.png')
+ghost_x = 738
+ghost = pygame.transform.scale(ghost, (40, 40))
+
 walk_right = pygame.image.load('images/player_right1.png')
 walk_right = pygame.transform.scale(walk_right, (60, 60))
+
 walk_left = pygame.image.load('images/player_left1.png')
 walk_left = pygame.transform.scale(walk_left, (60, 60))
 
@@ -81,16 +87,19 @@ while running:
     if b_x >= bd_width:
         b_x -= bd_width
 
+    ghost_x -= 8
+
     screen.blit(background,(b_x,0))
     screen.blit(background,(b_x + bd_width,0))
     screen.blit(background,(b_x - bd_width,0))
     screen.blit(image, (player_x,player_y))
+    screen.blit(ghost, (ghost_x,315))
 
 
     pygame.display.update()
 pygame.quit()
 
-# подумать, хорошая ли идея со самостоятельным движением, ну и сделать прыжок и врагов
+# добавить врагов
 
 
 
