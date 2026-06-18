@@ -92,7 +92,7 @@ while running:
         clock.tick(30)
 
         if gameplay:
-            player_rect = image.get_rect(topleft=(player_x, player_y)) # 
+            player_rect = image.get_rect(topleft=(player_x, player_y)) # форма игрока 
 
 
             move_b = -auto_move # начало смещения
@@ -136,7 +136,7 @@ while running:
             if b_x >= bd_width:
                 b_x -= bd_width
         
-            if ghost_list: #
+            if ghost_list: # призраки на экране
                 for element in ghost_list[:]: # проход по копии призраков
                     screen.blit(ghost, element)
                     element.x -= 7
@@ -176,7 +176,7 @@ while running:
                         for (index, ghost_element) in enumerate(ghost_list): # проход по призракам
                             if element.colliderect(ghost_element): # пуля попала в призрака
                                 ghost_list.pop(index)
-                                bullets.pop(i) # удаление призрака и пулю
+                                bullets.pop(i) # удаление призрака и пули
 
         else:
             if win_game:
@@ -189,7 +189,7 @@ while running:
                 screen.blit(restart_shrift, restart_shrift_rect)
 
             mouse = pygame.mouse.get_pos()
-            if restart_shrift_rect.collidepoint(mouse) and pygame.mouse.get_pressed()[0]:
+            if restart_shrift_rect.collidepoint(mouse) and pygame.mouse.get_pressed()[0]: # условие при рестарте
                 gameplay = True
                 win_game = False
                 player_x = 75
@@ -206,7 +206,7 @@ while running:
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
-            if start_game and event.type == ghost_timer:
+            if start_game and event.type == ghost_timer: # игра запущена и сработал таймер
                 if ghost_spawned < max_ghosts: # если меньше 20 создано
                     ghost_list.append(ghost.get_rect(topleft=(738,310)))
                     ghost_spawned += 1
@@ -214,7 +214,7 @@ while running:
                     if not ghost_list:
                         win_game = True
                         gameplay = False
-            if start_game and gameplay and event.type == pygame.KEYUP and event.key == pygame.K_g and bullets_gun > 0:
+            if start_game and gameplay and event.type == pygame.KEYUP and event.key == pygame.K_g and bullets_gun > 0: # нажатие выстрела
                 bullets.append(bullet.get_rect(topleft=(player_x + 30, player_y + 10)))
                 bullets_gun -= 1
 
