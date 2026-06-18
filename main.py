@@ -1,57 +1,57 @@
 import pygame
   
 pygame.init()
-screen = pygame.display.set_mode((736,414))
-pygame.display.set_caption("Охотник за привидениями")
-clock = pygame.time.Clock()
+screen = pygame.display.set_mode((736,414)) # экран
+pygame.display.set_caption("Охотник за привидениями") # заголовок
+clock = pygame.time.Clock() # кадры в секунду
 icon = pygame.image.load('images/icon.png')
 pygame.display.set_icon(icon)
 
-background = pygame.image.load('images/background11.jpg')
+background = pygame.image.load('images/background11.jpg') # задний фон
 bd_width = background.get_width() # ширина фона
 
-player = pygame.image.load('images/player_right.png')
+player = pygame.image.load('images/player_right.png') # игрок
 player = pygame.transform.scale(player, (60, 60))
 player_left = pygame.transform.flip(player, True, False)
 
-ghost = pygame.image.load('images/ghost.png')
+ghost = pygame.image.load('images/ghost.png') # призрак
 ghost = pygame.transform.scale(ghost, (40, 40))
 ghost_list = []
 
-my_sound = pygame.mixer.Sound('sounds/melodia.mp3')
+my_sound = pygame.mixer.Sound('sounds/melodia.mp3') # фоновая музыка
 my_sound.play()
 my_sound.set_volume(0.2)
 
-win_sound = pygame.mixer.Sound('sounds/win.mp3') 
+win_sound = pygame.mixer.Sound('sounds/win.mp3')  # звук победы
 win_sound.set_volume(0.5)
 
-walk_right = pygame.image.load('images/player_right1.png')
+walk_right = pygame.image.load('images/player_right1.png') # анимация ходьбы вперед
 walk_right = pygame.transform.scale(walk_right, (60, 60))
 
-walk_left = pygame.image.load('images/player_left1.png')
+walk_left = pygame.image.load('images/player_left1.png') # анимация ходьбы назад
 walk_left = pygame.transform.scale(walk_left, (60, 60))
 
 player_x = 75
 player_y = 310
 speed = 1
 
-is_jump = False
+is_jump = False # проверка игрока в прыжке
 jump_count = 9
 
 image = player
 
 look_right = True
-b_x = 0
-auto_move = 3
+b_x = 0 # смещение фона
+auto_move = 3 # скорость фона
 
-ghost_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(ghost_timer, 1700)
+ghost_timer = pygame.USEREVENT + 1 # таймер для появления призраков
+pygame.time.set_timer(ghost_timer, 1700) 
 
 shrift = pygame.font.Font('fonts/font_SolKol.ttf', 40)
 lose_shrift = shrift.render('Вы проиграли!!!', False, (255,46,46))
 win_shrift = shrift.render('Вы выиграли!!!', False, (0,255,0))
 restart_shrift = shrift.render('Играть заново', False, (46,46,255))
-restart_shrift_rect = restart_shrift.get_rect(topleft=(240,100))
+restart_shrift_rect = restart_shrift.get_rect(topleft=(240,100)) # форма для кнопки
 screen_lose = pygame.image.load('images/lose.jpg')
 screen_win = pygame.image.load('images/win.jpg')
 small_shrift = pygame.font.Font('fonts/font_SolKol.ttf', 30)
@@ -70,7 +70,7 @@ bullets = []
 bullets_gun = 10
 
 max_ghosts = 20
-ghost_spawned = 0
+ghost_spawned = 0 # счетчик созданных призраков
 win_game = False
 
 gameplay = True
@@ -82,31 +82,31 @@ while running:
         screen.blit(title, title_rect)
         screen.blit(startik, startik_rect)
 
-        mouse = pygame.mouse.get_pos()
+        mouse = pygame.mouse.get_pos() # позиция курсора мыши
         if startik_rect.collidepoint(mouse) and pygame.mouse.get_pressed()[0]:
             start_game = True
-    else:
+    else: # если игра запущена
         screen.blit(background,(b_x,0))
         screen.blit(background,(b_x + bd_width,0))
         screen.blit(background,(b_x - bd_width,0))
         clock.tick(30)
 
         if gameplay:
-            player_rect = image.get_rect(topleft=(player_x, player_y))
+            player_rect = image.get_rect(topleft=(player_x, player_y)) # 
 
 
-            move_b = -auto_move
+            move_b = -auto_move # начало смещения
             keys = pygame.key.get_pressed()
             if keys[pygame.K_d] and player_x < 600:
                 player_x += speed
                 image = walk_right
                 move_b = -5
-                look_right = True
+                look_right = True # смотрит вправо
             elif keys[pygame.K_a] and player_x > 75:
                 player_x -= speed
                 image = walk_left
                 move_b = 5
-                look_right = False
+                look_right = False # смотрит влево
                 screen.blit(shrift.render('Призраки ускоряются!', False, (255, 46, 46)), (180, 200))
             else:
                 if look_right:
@@ -115,19 +115,19 @@ while running:
                     image = player_left
             
             
-            if not is_jump:
+            if not is_jump: # игрок не в прыжке
                 if keys[pygame.K_SPACE]:
                     is_jump = True
             else:
-                if jump_count >= -9:
+                if jump_count >= -9: # минимум прыжка
                     if jump_count > 0:
-                        player_y -= (jump_count ** 2) / 2
+                        player_y -= (jump_count ** 2) / 2 # поднмаем игрока вверх
                     else:
-                        player_y += (jump_count ** 2) / 2
+                        player_y += (jump_count ** 2) / 2 # опускаем игрока вниз
                     jump_count -= 1
                 else:
                     is_jump = False
-                    jump_count = 9
+                    jump_count = 9 # сброс прыжка
 
             b_x += move_b 
 
@@ -136,8 +136,8 @@ while running:
             if b_x >= bd_width:
                 b_x -= bd_width
         
-            if ghost_list:
-                for element in ghost_list[:]:
+            if ghost_list: #
+                for element in ghost_list[:]: # проход по копии призраков
                     screen.blit(ghost, element)
                     element.x -= 7
 
@@ -154,10 +154,10 @@ while running:
                 my_sound.stop()
                 win_sound.play()
                 
-            screen.blit(image, (player_x, player_y))
+            screen.blit(image, (player_x, player_y)) # рисовка игрока
             
             if bullets_gun <= 3:
-                bullets_text = small_shrift.render(f'{bullets_gun}',False, (255,0,0))
+                bullets_text = small_shrift.render(f'{bullets_gun}',False, (255,0,0)) 
             else:
                 bullets_text = small_shrift.render(f'{bullets_gun}', False, (255,255,255))
 
@@ -165,7 +165,7 @@ while running:
             screen.blit(bullets_text, text_rect)
 
             if bullets:
-                for (i,element) in enumerate(bullets):
+                for (i,element) in enumerate(bullets): # проход по пулям с индексом
                     screen.blit(bullet, (element.x, element.y))
                     element.x += 5
 
@@ -173,10 +173,10 @@ while running:
                         bullets.pop(i)
 
                     if ghost_list:
-                        for (index, ghost_element) in enumerate(ghost_list):
-                            if element.colliderect(ghost_element):
+                        for (index, ghost_element) in enumerate(ghost_list): # проход по призракам
+                            if element.colliderect(ghost_element): # пуля попала в призрака
                                 ghost_list.pop(index)
-                                bullets.pop(i)
+                                bullets.pop(i) # удаление призрака и пулю
 
         else:
             if win_game:
@@ -196,7 +196,8 @@ while running:
                 ghost_list.clear()
                 bullets.clear()
                 bullets_gun = 10
-                ghost_spawned = 0
+                ghost_spawned = 0 # сброс счетчика созданных призраков
+                my_sound.stop()
                 my_sound.play()
 
     pygame.display.update()
@@ -206,10 +207,10 @@ while running:
                 running = False
                 pygame.quit()
             if start_game and event.type == ghost_timer:
-                if ghost_spawned < max_ghosts:
+                if ghost_spawned < max_ghosts: # если меньше 20 создано
                     ghost_list.append(ghost.get_rect(topleft=(738,310)))
                     ghost_spawned += 1
-                else:
+                else: # если уже 20
                     if not ghost_list:
                         win_game = True
                         gameplay = False
